@@ -13,7 +13,7 @@ class AdminController extends BaseController
     }
     public function dashboard()
     {
-        return view('merchant/dashboard');
+        return view('admin/dashboard');
     }
 
     public function index(){

@@ -8,14 +8,14 @@
         <!-- Title -->
         <div class="row heading-bg">
             <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                <h5 class="txt-dark">Data Jenis Produk atau Kategori</h5>
+                <h5 class="txt-dark">Data Jasa</h5>
             </div>
             <!-- Breadcrumb -->
             <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
                 <ol class="breadcrumb">
                     <li><a href="index.html">Dashboard</a></li>
                     <li><a href="#"><span>table</span></a></li>
-                    <li class="active"><span>Category</span></li>
+                    <li class="active"><span>Service</span></li>
                 </ol>
             </div>
             <!-- /Breadcrumb -->
@@ -25,13 +25,12 @@
         <!-- Row -->
         <div class="row">
             <div class="col-sm-12">
-                <?php if(isset($validation)) : ?>
-                <div class=col-12>
-                    <div class="alert alert-danger alert-dismissable alert-style-1">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        <i class="zmdi zmdi-block"></i><?= $validation->listErrors() ?>
+                <?php if (!empty(session()->getFlashdata('error'))) : ?>
+                    <div class="alert alert-danger" role="alert">
+                        <h4>Periksa Masukkan</h4>
+                        </hr />
+                        <?php echo session()->getFlashdata('error'); ?>
                     </div>
-                </div>
                 <?php endif; ?>
                 <?php if(session()->getFlashData('status') == "success"){ ?>
                 <div class="alert alert-success alert-dismissable alert-style-1">
@@ -47,7 +46,7 @@
                 <div class="panel panel-default card-view">
                     <div class="panel-heading">
                         <div class="pull-left">
-                            <h6 class="panel-title txt-dark">Jenis Produk / Kategori</h6>
+                            <h6 class="panel-title txt-dark">Jenis Produk</h6>
                         </div>
                         <div class="clearfix"></div>
                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal">Add
@@ -61,8 +60,9 @@
                                         <thead>
                                             <tr>
                                                 <th>No</th>
-                                                <th>Kode</th>
-                                                <th>Nama</th>
+                                                <th>Foto</th>
+                                                <th>Nama Jasa</th>
+                                                <th>Deskripsi</th>
                                                 <th>Tanggal Buat</th>
                                                 <th>Tanggal Ubah</th>
                                                 <th>Action</th>
@@ -72,17 +72,24 @@
                                             <?php foreach ($data as $key => $value) { ?>
                                             <tr>
                                                 <td><?= ++$key ?></td>
-                                                <td><?= $value->kode_jenis_produk ?></td>
-                                                <td><?= $value->nama_jenis_produk ?></td>
+                                                <td>
+                                                    <img height="100px" class="img-rounded"
+                                                        src="<?= base_url('assets/img/jasa/') ?>/<?= get_service($value->id_jasa)['foto'] ?>"
+                                                        alt="avatar">
+                                                </td>
+                                                </td>
+                                                <td><?= $value->nama_jasa ?></td>
+                                                <td><?= $value->deskripsi ?></td>
                                                 <td><?= $value->created_at ?></td>
                                                 <td><?= $value->updated_at ?></td>
                                                 <td>
                                                     <a href="#" class="btn btn-info btn-sm btn-edit"
-                                                        data-id="<?= $value->id_jenis_produk;?>"
-                                                        data-kode-jenis-produk="<?= $value->kode_jenis_produk;?>"
-                                                        data-nama-jenis-produk="<?= $value->nama_jenis_produk;?>"">Edit</a>
+                                                        data-id="<?= $value->id_jasa;?>"
+                                                        data-nama-jasa="<?= $value->nama_jasa;?>"
+                                                        data-foto="<?= $value->foto;?>"
+                                                        data-deskripsi="<?= $value->deskripsi;?>"">Edit</a>
                                                         <a href=" #" class="btn btn-danger btn-sm btn-delete"
-                                                        data-id="<?= $value->id_jenis_produk;?>">Delete</a>
+                                                        data-id="<?= $value->id_jasa;?>">Delete</a>
                                                 </td>
                                             </tr>
                                             <?php } ?>
@@ -108,28 +115,39 @@
     </footer>
     <!-- /Footer -->
 
- <!-- Modal Add Category-->
-    <form action="<?= route_to('merchant_category_save') ?>" method="post">
+    <!-- Modal Add Service-->
+    <form action="<?= route_to('merchant_service_save') ?>" method="post" enctype="multipart/form-data">
         <?= csrf_field()?>
         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Tambah Jenis Produk atau Kategori</h5>
+                        <h5 class="modal-title">Tambah Jasa</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Kode Produk</label>
-                            <input type="text" class="form-control" name="kode_jenis_produk"
-                                placeholder="Kode Jenis Produk">
+                            <label>Nama Jasa</label>
+                            <input type="text" class="form-control" name="nama_jasa" placeholder="Nama Jasa">
                         </div>
                         <div class="form-group">
-                            <label>Nama Produk</label>
-                            <input type="text" class="form-control" name="nama_jenis_produk"
-                                placeholder="Nama Jenis Produk">
+                            <label>Deskripsi</label>
+                            <textarea class="form-control" name="deskripsi" placeholder="Deskripsi"></textarea>
+                        </div>
+                        <div class="panel-heading">
+                            <div class="pull-left">
+                                <h6 class="panel-title txt-dark">Upload Foto Produk</h6>
+                                </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="panel-wrapper collapse in">
+                            <div class="panel-body">
+                                <div class="mt-40">
+                                    <input name="file" type="file" id="input-file-now-custom-2" class="dropify" data-height="500" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -140,64 +158,76 @@
             </div>
         </div>
     </form>
-    <!-- End Modal Add Category-->
+    <!-- End Modal Add Service-->
 
-    <!-- Modal Edit Product-->
-    <form action="<?= route_to('merchant_category_update') ?>" method="post">
+    <!-- Modal Update Service-->
+    <form action="<?= route_to('merchant_service_update') ?>" method="post" enctype="multipart/form-data">
+        <?= csrf_field()?>
         <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Ubah Jenis Produk / Category</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Ubah Jasa</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Kode</label>
-                            <input type="text" class="form-control kode_jenis_produk" name="kode_jenis_produk"
-                                placeholder="Product Name">
+                            <label>Nama Jasa</label>
+                            <input type="text" class="form-control nama_jasa" name="nama_jasa" placeholder="Nama Jasa">
                         </div>
-
                         <div class="form-group">
-                            <label>Nama</label>
-                            <input type="text" class="form-control nama_jenis_produk" name="nama_jenis_produk"
-                                placeholder="Product Price">
+                            <label>Deskripsi</label>
+                            <textarea class="form-control deskripsi" name="deskripsi" placeholder="Deskripsi"></textarea>
+                        </div>
+                        <div class="panel-heading">
+                            <div class="pull-left">
+                                <h6 class="panel-title txt-dark">Upload Foto Produk</h6>
+                                </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="panel-wrapper collapse in">
+                            <div class="panel-body">
+                                <div class="mt-40">
+                                    <input name="file" type="file" id="input-file-now-custom-2" class="dropify" data-height="500" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="hidden" name="id_jenis_produk" class="id_jenis_produk">
+                        <input type="hidden" name="id_jasa" class="id_jasa">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Update</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
                 </div>
             </div>
         </div>
     </form>
-    <!-- End Modal Edit Product-->
+    <!-- End Modal Update Service-->
 
-    <!-- Modal Delete Category-->
-    <form action="<?= route_to('merchant_category_delete') ?>" method="post">
+
+    <!-- Modal Delete Service-->
+    <form action="<?= route_to('merchant_service_delete') ?>" method="post">
         <?= csrf_field() ?>
         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Hapus Jenis Produk/Kategori</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Hapus Produk</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
 
-                        <h4>Apakah Kamu Ingin Menghapus Jenis Produk atau Kategori Ini?</h4>
+                        <h4>Apakah Kamu Ingin Menghapus Produk Ini?</h4>
 
                     </div>
                     <div class="modal-footer">
-                        <input type="hidden" name="id_jenis_produk" class="jenisProdukID">
+                        <input type="hidden" name="id_jasa" class="jasaID">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
                         <button type="submit" class="btn btn-primary">Yes</button>
                     </div>
@@ -205,22 +235,25 @@
             </div>
         </div>
     </form>
-    <!-- End Modal Delete Category-->
+    <!-- End Modal Delete Service-->
 
 </div>
 <!-- /Main Content -->
+
 <?= $this->endSection() ?>
 
 <?= $this->section('javascript') ?>
 <script>
     $(document).ready(function () {
-        $('.btn-edit').on('click',function(){
+        $('.btn-edit').on('click', function () {
             const id = $(this).data('id');
-            const kode = $(this).data('kode-jenis-produk');
-            const nama = $(this).data('nama-jenis-produk');
-            $('.id_jenis_produk').val(id);
-            $('.kode_jenis_produk').val(kode);
-            $('.nama_jenis_produk').val(nama);
+            const nama_jasa = $(this).data('nama-jasa');
+            const foto = $(this).data('foto');
+            const deskripsi = $(this).data('deskripsi')
+            $('.id_jasa').val(id);
+            $('.nama_jasa').val(nama_jasa);
+            $('.foto').val(foto);
+            $('.deskripsi').val(deskripsi);
             $('#editModal').modal('show');
         });
 
@@ -228,7 +261,7 @@
             e.preventDefault();
             const id = $(this).data('id');
             console.log(id);
-            $('.jenisProdukID').val(id);
+            $('.jasaID').val(id);
             $('#deleteModal').modal('show');
         });
     });

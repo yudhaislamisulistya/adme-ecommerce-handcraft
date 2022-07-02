@@ -271,6 +271,13 @@
                     </a>
                 </li>
                 <li>
+                    <a href="<?= route_to('merchant_service_index') ?>">
+                        <div class="pull-left"><i class="zmdi zmdi-fire mr-20"></i><span
+                            class="right-nav-text">Jasa</span></div>
+                        <div class="clearfix"></div>
+                    </a>
+                </li>
+                <li>
                     <a href="<?= route_to('merchant_transaction_index') ?>">
                         <div class="pull-left"><i class="zmdi zmdi-money-box mr-20"></i><span
                                 class="right-nav-text">Transaksi/Pemesanan</span></div>

@@ -20,7 +20,7 @@ class MerchantController extends BaseController
     public function index(){
         $data = $this->userModel->where('level', 2)
             ->get()->getResult();
-        return view('admin/admin', compact('data'));
+        return view('admin/merchant', compact('data'));
     }
 
     public function save(){

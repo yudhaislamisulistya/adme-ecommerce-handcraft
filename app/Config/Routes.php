@@ -94,6 +94,13 @@ $routes->group('merchant', ['filter' => 'auth'], function($routes){
         $routes->get('/', 'UserController::list', ['as' => 'merchant_user_list']);
         $routes->post('delete', 'UserController::delete', ['as' => 'merchant_user_delete']);
     });
+    // SERVICE CONTROLLER
+    $routes->group('service', function($route){
+        $route->get('/', 'ServiceController::index', ['as' => 'merchant_service_index']);
+        $route->post('save', 'ServiceController::save', ['as' => 'merchant_service_save']);
+        $route->post('delete', 'ServiceController::delete', ['as' => 'merchant_service_delete']);
+        $route->post('update', 'ServiceController::update', ['as' => 'merchant_service_update']);
+    });
 });
 
 

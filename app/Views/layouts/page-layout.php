@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Philbert I Fast build Admin dashboard for any platform</title>
+    <title>Admin and Merchant Dashboard - E-Commerce Handcraft</title>
     <meta name="description" content="Philbert is a Dashboard & Admin Site Responsive Template by hencework." />
     <meta name="keywords"
         content="admin, admin dashboard, admin template, cms, crm, Philbert Admin, Philbertadmin, premium admin templates, responsive admin, sass, panel, software, ui, visualization, web app, application" />

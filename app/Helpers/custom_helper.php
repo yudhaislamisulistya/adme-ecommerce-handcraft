@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\FeedbackModel;
+use App\Models\JasaModel;
 use App\Models\JenisProdukModel;
 use App\Models\PembelianModel;
 use App\Models\ProdukModel;
@@ -14,6 +15,13 @@ function cekUser(){
 function get_product($id_produk){
     $produkModel = new ProdukModel();
     $data = $produkModel->where('id_produk', $id_produk)
+        ->first();
+    return $data;
+}
+
+function get_service($id_jasa){
+    $jasaModel = new JasaModel();
+    $data = $jasaModel->where('id_jasa', $id_jasa)
         ->first();
     return $data;
 }
